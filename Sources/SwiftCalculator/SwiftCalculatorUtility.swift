@@ -30,26 +30,8 @@ extension SwiftCalculatorUtility: SwiftCalculator {
         switch button {
         case .CLEAR:
             clear()
-        case .ONE:
-            one()
-        case .TWO:
-            two()
-        case .THREE:
-            three()
-        case .FOUR:
-            four()
-        case .FIVE:
-            five()
-        case .SIX:
-            six()
-        case .SEVEN:
-            seven()
-        case .EIGHT:
-            eight()
-        case .NINE:
-            nine()
-        case .ZERO:
-            zero()
+        case .DIGIT(let digit):
+            enterDigit(digit)
         case .DECIMAL:
             decimal()
         case .PLUS:
@@ -79,54 +61,9 @@ extension SwiftCalculatorUtility: SwiftCalculator {
         controlProcessor.outputManager.initialize(number)
     }
     
-    private func one() {
-        try? controlProcessor.numberProcessor.processNumber(.ONE)
-        controlProcessor.outputManager.update(.ONE)
-    }
-    
-    private func two() {
-        try? controlProcessor.numberProcessor.processNumber(.TWO)
-        controlProcessor.outputManager.update(.TWO)
-    }
-    
-    private func three() {
-        try? controlProcessor.numberProcessor.processNumber(.THREE)
-        controlProcessor.outputManager.update(.THREE)
-    }
-    
-    private func four() {
-        try? controlProcessor.numberProcessor.processNumber(.FOUR)
-        controlProcessor.outputManager.update(.FOUR)
-    }
-    
-    private func five() {
-        try? controlProcessor.numberProcessor.processNumber(.FIVE)
-        controlProcessor.outputManager.update(.FIVE)
-    }
-    
-    private func six() {
-        try? controlProcessor.numberProcessor.processNumber(.SIX)
-        controlProcessor.outputManager.update(.SIX)
-    }
-    
-    private func seven() {
-        try? controlProcessor.numberProcessor.processNumber(.SEVEN)
-        controlProcessor.outputManager.update(.SEVEN)
-    }
-    
-    private func eight() {
-        try? controlProcessor.numberProcessor.processNumber(.EIGHT)
-        controlProcessor.outputManager.update(.EIGHT)
-    }
-    
-    private func nine() {
-        try? controlProcessor.numberProcessor.processNumber(.NINE)
-        controlProcessor.outputManager.update(.NINE)
-    }
-    
-    private func zero() {
-        try? controlProcessor.numberProcessor.processNumber(.ZERO)
-        controlProcessor.outputManager.update(.ZERO)
+    private func enterDigit(_ digit: Int) {
+        try? controlProcessor.numberProcessor.processNumber(.DIGIT(digit))
+        controlProcessor.outputManager.update(.DIGIT(digit))
     }
     
     private func decimal() {

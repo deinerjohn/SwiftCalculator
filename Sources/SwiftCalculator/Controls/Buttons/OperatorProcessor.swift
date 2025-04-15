@@ -26,7 +26,7 @@ internal class OperatorProcessor {
         case entriesManager.isEntriesEmpty():
             
             entriesManager.setReadyToClear(false)
-            entriesManager.addEntry(SwiftCalculatorButton.ZERO.rawValue)
+            entriesManager.addEntry(SwiftCalculatorButton.DIGIT(0).rawValue)
             entriesManager.addEntry(`operator`)
             
         case entriesManager.isReadyToClear():
@@ -58,7 +58,7 @@ internal class OperatorProcessor {
             
             if (entriesManager.isSingleEntry()) {
                 entriesManager.removeLastEntry()
-                entriesManager.addEntry(SwiftCalculatorButton.ZERO.rawValue)
+                entriesManager.addEntry(SwiftCalculatorButton.DIGIT(0).rawValue)
                 entriesManager.addEntry(`operator`)
             } else {
                 entriesManager.removeLastEntry()

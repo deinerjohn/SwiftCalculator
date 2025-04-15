@@ -7,24 +7,41 @@
 
 import Foundation
 
-public enum SwiftCalculatorButton: String {
-    case CLEAR = "clear"
-    case ONE = "1"
-    case TWO = "2"
-    case THREE = "3"
-    case FOUR = "4"
-    case FIVE = "5"
-    case SIX = "6"
-    case SEVEN = "7"
-    case EIGHT = "8"
-    case NINE = "9"
-    case ZERO = "0"
-    case DECIMAL = "."
-    case PLUS = "+"
-    case MINUS = "-"
-    case MULTIPLY = "*"
-    case DIVIDE = "/"
-    case BACKSPACE = "backspace"
-    case PERCENT = "%"
-    case EQUALS = "="
+public enum SwiftCalculatorButton: Equatable {
+    case CLEAR
+    case DIGIT(Int)
+    case DECIMAL
+    case PLUS
+    case MINUS
+    case MULTIPLY
+    case DIVIDE
+    case BACKSPACE
+    case PERCENT
+    case EQUALS
+    
+    public var rawValue: String {
+        switch self {
+        case .CLEAR:
+            return "clear"
+        case .DIGIT(let number):
+            return String(number)
+        case .DECIMAL:
+            return "."
+        case .PLUS:
+            return "+"
+        case .MINUS:
+            return "-"
+        case .MULTIPLY:
+            return "*"
+        case .DIVIDE:
+            return "/"
+        case .BACKSPACE:
+            return "backspace"
+        case .PERCENT:
+            return "%"
+        case .EQUALS:
+            return "="
+        }
+    }
+    
 }
