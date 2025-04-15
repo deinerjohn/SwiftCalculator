@@ -13,7 +13,7 @@ public enum SwiftCalculatorUpdate {
         key: String?,
         entries: Array<String>,
         result: Decimal,
-        resultString: String
+        formattedResult: String
     )
     case error(SwiftCalculatorError)
 }

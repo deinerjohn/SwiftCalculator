@@ -84,15 +84,15 @@ extension OutputManager {
                 }
             }()
 
-            print("Calculator: Key: \(button.rawValue) | Entries: \(entries) | Result: \(result) " +
-                  "| ResultText: \(resultText)")
+            print("Calculator: Key: \(button.rawValue) | Entries: \(entries) | Raw result: \(result) " +
+                  "| Formatted Result String: \(resultText.formattedWithCommas())")
 
             updateDelegate(
                 SwiftCalculatorUpdate.updating(
                     key: button.rawValue,
                     entries: entries,
                     result: result,
-                    resultString: resultText
+                    formattedResult: resultText.formattedWithCommas()
                 )
             )
         } catch {
@@ -115,6 +115,7 @@ extension OutputManager {
     func initialize(_ number: Double) {
         let entries = entriesManager.getEntries()
         updateDelegate(SwiftCalculatorUpdate.initializing(number: number, entries: entries))
+        print("Calculator: Initializing calculator \(number) | Entries: \(entries)")
     }
 
     func updateDelegate(_ calculatorUpdate: SwiftCalculatorUpdate) {
