@@ -94,10 +94,9 @@ class ViewController: UIViewController, SwiftCalculatorDelegate {
 
 ```swift
 
-import SwiftUI
-import SwiftCalculator
-
 class CalculatorViewModel: ObservableObject, SwiftCalculatorDelegate {
+    
+    @Published var expression: String = ""
     @Published var result: String = "0"
     private var calculator: SwiftCalculator!
 
@@ -108,42 +107,169 @@ class CalculatorViewModel: ObservableObject, SwiftCalculatorDelegate {
             readyToClear: true,
             delegate: self
         )
+        
     }
-
-    // Handle calculator updates
-    func onUpdateCalculator(update: SwiftCalculatorUpdate) {
-        switch update {
-        case .initializing(let number, let entries):
-            //TODO:
-            break
-        case .updating(let key, let entries, let result2, let resultString):
-            result = "\(entries)"
-            break
-        case .error(let swiftCalculatorError):
-            break
-        }
-    }
-
-    // Methods for interacting with the calculator
+    
     func pressDigit(_ digit: Int) {
         calculator.press(.DIGIT(digit))
     }
 
-    func pressAdd() {
-        calculator.press(.add)
-    }
-
     func pressEqual() {
-        calculator.press(.equal)
+        calculator.press(.EQUALS)
+        result = "\(calculator.getCurrentFormattedResult())"
     }
 
     func pressReset() {
         calculator.resetToNumber(number: 0.0, readyToClear: true)
     }
+    
+    func pressBackspace() {
+        calculator.press(.BACKSPACE)
+    }
+    
+    func pressClear() {
+        calculator.press(.CLEAR)
+        result = "0"
+    }
+    
+    func pressDecimal() {
+        calculator.press(.DECIMAL)
+    }
+    
+    func pressPercent() {
+        calculator.press(.PERCENT)
+    }
+    
+    func onUpdateCalculator(update: SwiftCalculatorUpdate) {
+        switch update {
+        case .initializing(let number, let entries):
+            break
+        case .updating(let key, let entries, let formattedEntries, let result2, let resultString):
+            expression = formattedEntries.joined()
+            break
+        case .error(let swiftCalculatorError):
+            break
+        }
+    }
+    
+    func operand(_ operand: String) {
+        switch CalculatorOperand(rawValue: operand) {
+        case .add:
+            calculator.press(.PLUS)
+        case .minus:
+            calculator.press(.MINUS)
+        case .multiply:
+            calculator.press(.MULTIPLY)
+        case .divide:
+            calculator.press(.DIVIDE)
+            
+        default: break
+        }
+        
+        //Call to get current result
+        result = "\(calculator.getCurrentFormattedResult())"
+    }
+    
 }
 
 
 ```
+
+### SwiftUI View Example Usage
+
+```swift
+
+
+struct CalculatorView: View {
+    @StateObject private var viewModel = ContentViewModel()
+
+    let buttons: [[String]] = [
+        ["⌫", "Clear", "%", "÷"],
+        ["7", "8", "9", "×"],
+        ["4", "5", "6", "−"],
+        ["1", "2", "3", "+"],
+        ["0", ".", "="]
+    ]
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            Text(viewModel.expression)
+                .font(.title2)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.horizontal)
+            
+            // Display
+            Text(viewModel.result)
+                .font(.system(size: 64))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding()
+                .lineLimit(1)
+            
+
+            // Buttons
+            ForEach(buttons, id: \.self) { row in
+                HStack(spacing: 12) {
+                    ForEach(row, id: \.self) { button in
+                        Button(action: {
+                            handleButtonPress(button)
+                        }) {
+                            Text(button)
+                                .font(.system(size: 32))
+                                .frame(width: self.buttonWidth(button), height: self.buttonHeight())
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(self.buttonWidth(button) / 2)
+                        }
+                    }
+                }
+            }
+        }
+        .padding()
+    }
+    
+    private func handleButtonPress(_ button: String) {
+        print(button)
+        switch button {
+        case ".":
+            self.viewModel.pressDecimal()
+        case "0"..."9":
+            self.viewModel.pressDigit(Int(button) ?? 0)
+        case "%":
+            self.viewModel.pressPercent()
+        case "−":
+            self.viewModel.operand("--")
+        case "+", "÷":
+            self.viewModel.operand(button)
+        case "×":
+            self.viewModel.operand("xx")
+        case "=":
+            self.viewModel.pressEqual()
+        case "⌫":
+            self.viewModel.pressBackspace()
+        case "Clear":
+            self.viewModel.pressClear()
+        default:
+            break
+        }
+    }
+
+    private func buttonWidth(_ button: String) -> CGFloat {
+        return button == "0" ? ((UIScreen.main.bounds.width - 5 * 12) / 2) : ((UIScreen.main.bounds.width - 5 * 12) / 4)
+    }
+
+    private func buttonHeight() -> CGFloat {
+        return (UIScreen.main.bounds.width - 5 * 12) / 4
+    }
+    
+}
+
+
+```
+
+
 
 In the `CalculatorViewModel`:
 
