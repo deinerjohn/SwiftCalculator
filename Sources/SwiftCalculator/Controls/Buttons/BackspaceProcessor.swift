@@ -20,12 +20,12 @@ internal class BackspaceProcessor {
     
     func onBackSpace() throws {
         
-        if entriesManager.hasEntries() {
+        if entriesManager.hasEntries {
             
-            let entry = String(entriesManager.getLastEntry().dropLast())
+            let entry = entriesManager.lastEntry.trimLast()
             
             switch true {
-            case entriesManager.isReadyToClear():
+            case entriesManager.isReadyToClear:
                 entriesManager.setReadyToClear(true)
                 
                 if !entry.isEmpty {
@@ -33,17 +33,17 @@ internal class BackspaceProcessor {
                 } else {
                     entriesManager.removeLastEntry()
                 }
-            case entriesManager.isLastEntryAPercentNumber():
+            case entriesManager.isLastEntryAPercentNumber:
                 entriesManager.setLastEntry(entry)
-            case entriesManager.isLastEntryANumber():
+            case entriesManager.isLastEntryANumber:
                 if !entry.isEmpty {
                     entriesManager.setLastEntry(entry)
                 } else {
                     entriesManager.removeLastEntry()
                 }
-            case entriesManager.isLastEntryEndsWithExponent():
+            case entriesManager.isLastEntryEndsWithExponent:
                 entriesManager.setLastEntry(entry)
-            case entriesManager.isLastEntryAnOperator(), entriesManager.isLastEntryADecimal():
+            case entriesManager.isLastEntryAnOperator, entriesManager.isLastEntryADecimal:
                 entriesManager.removeLastEntry()
             default:
                 throw BackspaceProcessorError.invalid("Invalid backspace")

@@ -21,7 +21,7 @@ internal class DecimalProcessor {
     
     func processDecimal() throws {
         
-        if entriesManager.isEntriesEmpty() {
+        if entriesManager.isEntriesEmpty {
             
             entriesManager.setReadyToClear(true)
             entriesManager.addEntry(SwiftCalculatorButton.DECIMAL.rawValue)
@@ -29,23 +29,23 @@ internal class DecimalProcessor {
         } else {
             
             switch true {
-            case entriesManager.isReadyToClear():
+            case entriesManager.isReadyToClear:
                 entriesManager.setReadyToClear(false)
                 entriesManager.clearEntries()
                 entriesManager.addEntry(SwiftCalculatorButton.DECIMAL.rawValue)
-            case entriesManager.isLastEntryAnOperator():
+            case entriesManager.isLastEntryAnOperator:
                 entriesManager.addEntry(SwiftCalculatorButton.DECIMAL.rawValue)
-            case entriesManager.isLastEntryANumberWithDecimal():
-                let entries = entriesManager.getEntries()
+            case entriesManager.isLastEntryANumberWithDecimal:
+                let entries = entriesManager.getEntries
                 outputManager.updateDelegate(.error(.invalidKey(invalidType: .INVALID_DECIMAL_ENTRY, entries: entries)))
                 return
-            case entriesManager.isLastEntryAPercentNumber():
-                let entry = String(entriesManager.getLastEntry().dropLast())
+            case entriesManager.isLastEntryAPercentNumber:
+                let entry = entriesManager.lastEntry.trimLast()
                 entriesManager.setLastEntry(entry)
                 entriesManager.appendToLastEntry(SwiftCalculatorButton.DECIMAL.rawValue)
-            case entriesManager.isLastEntryANumber():
+            case entriesManager.isLastEntryANumber:
                 entriesManager.appendToLastEntry(SwiftCalculatorButton.DECIMAL.rawValue)
-            case entriesManager.isLastEntryADecimal():
+            case entriesManager.isLastEntryADecimal:
                 return
             default:
                 throw MathError.illegalOperation("Invalid decimal command")

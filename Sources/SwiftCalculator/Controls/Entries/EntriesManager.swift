@@ -8,84 +8,99 @@
 import Foundation
 
 internal class EntriesManager {
-    private var entries: Array<String> = []
-    private var result: Decimal? = nil
-    private var readyToClear: Bool = false
     
+    //MARK: - Properties
+    
+    private(set) var entries: Array<String> = []
+    private(set) var result: Decimal? = nil
+    private(set) var readyToClear: Bool = false
+    private(set) var formattedResult: String? = nil
+    
+    //MARK: - Instance
     static func instance() -> EntriesManager {
         return EntriesManager()
     }
     
-    func getEntries() -> Array<String> {
-        return entries
-    }
-
+    //MARK: - Setters
+    
     func clearEntries() {
         entries.removeAll()
     }
-
-    func isReadyToClear() -> Bool {
-        return readyToClear
-    }
-
-    func setReadyToClear(_ readyToClear: Bool) {
-        self.readyToClear = readyToClear
-    }
-
-    func getResult() -> Decimal {
-        return result ?? 0.0
-    }
-
-    func setResult(_ result: Decimal) {
-        self.result = result
-    }
-
-    func addEntry(_ entry: String) {
-        entries.append(entry)
-    }
-
-    func isEntriesEmpty() -> Bool {
-        return entries.isEmpty
-    }
-
-    func hasEntries() -> Bool {
-        return !entries.isEmpty
-    }
-
-    func isSingleEntry() -> Bool {
-        return entries.count == 1
-    }
-
+    
     func removeLastEntry() {
-        if self.hasEntries() {
+        if hasEntries {
             entries.removeLast()
         }
     }
-
+    
     func setLastEntry(_ entry: String) {
         if let lastIndex = entries.indices.last {
             entries[lastIndex] = entry
         }
     }
-
+    
     func appendToLastEntry(_ text: String) {
-        setLastEntry(getLastEntry() + text)
+        setLastEntry(lastEntry + text)
+    }
+    
+    func setFormattedResult(_ formattedResult: String) {
+        self.formattedResult = formattedResult
     }
 
-    func getLastEntry() -> String {
+    func addEntry(_ entry: String) {
+        entries.append(entry)
+    }
+    
+    func setReadyToClear(_ readyToClear: Bool) {
+        self.readyToClear = readyToClear
+    }
+    
+    func setResult(_ result: Decimal) {
+        self.result = result
+    }
+    
+    //MARK: - Getters / Boolean Checkers
+    
+    var lastEntry: String {
         return entries.last ?? ""
     }
+    
+    var getEntries: Array<String> {
+        return entries
+    }
 
-    func getLastDoubleEntry() -> Decimal {
-        let lastEntry = getLastEntry()
+    var isReadyToClear: Bool {
+        return readyToClear
+    }
 
+    var getResult: Decimal {
+        return result ?? 0.0
+    }
+    
+    var getFormattedResult: String {
+        return formattedResult ?? ""
+    }
+    
+    var isEntriesEmpty: Bool {
+        return entries.isEmpty
+    }
+
+    var hasEntries: Bool {
+        return !entries.isEmpty
+    }
+
+    var isSingleEntry: Bool {
+        return entries.count == 1
+    }
+
+    var getLastDoubleEntry: Decimal {
         var value: Double = 0.0
         
         if lastEntry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue) {
-            let trimmedEntry = lastEntry.dropLast()
+            let trimmedEntry = lastEntry.trimLast()
             value = (Double(trimmedEntry) ?? 0.0) / 100.0
         } else if lastEntry.lowercased().hasSuffix("e") {
-            let trimmedEntry = lastEntry.dropLast()
+            let trimmedEntry = lastEntry.trimLast()
             value = Double(trimmedEntry) ?? 0.0
         } else if lastEntry.lowercased().hasSuffix("e-") {
             let trimmedEntry = lastEntry.dropLast(2)
@@ -97,38 +112,38 @@ internal class EntriesManager {
         return Decimal(value)
     }
 
-    func isLastEntryADecimal() -> Bool {
-        return getLastEntry().lowercased() == SwiftCalculatorButton.DECIMAL.rawValue.lowercased()
+    var isLastEntryADecimal: Bool {
+        return lastEntry.lowercased() == SwiftCalculatorButton.DECIMAL.rawValue.lowercased()
     }
 
-    func isLastEntryAnOperator() -> Bool {
-        return OperatorUtils.operatorTags.contains(getLastEntry())
+    var isLastEntryAnOperator: Bool {
+        return OperatorUtils.operatorTags.contains(lastEntry)
     }
 
-    func isLastEntryAPercentNumber() -> Bool {
-        return getLastEntry().hasSuffix(SwiftCalculatorButton.PERCENT.rawValue)
+    var isLastEntryAPercentNumber: Bool {
+        return lastEntry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue)
     }
 
-    func isLastEntryEndsWithExponent() -> Bool {
-        let entry = getLastEntry().lowercased()
+    var isLastEntryEndsWithExponent: Bool {
+        let entry = lastEntry.lowercased()
         return entry.hasSuffix("e") || entry.hasSuffix("e-")
     }
 
-    func isLastEntryANumber() -> Bool {
-        return Double(getLastEntry()) != nil
+    var isLastEntryANumber: Bool {
+        return Double(lastEntry) != nil
     }
 
-    func isLastEntryANumberWithDecimal() -> Bool {
+    var isLastEntryANumberWithDecimal: Bool {
 
-        if (isLastEntryANumber() || isLastEntryAPercentNumber()) {
-            return getLastEntry().contains(SwiftCalculatorButton.DECIMAL.rawValue)
+        if (isLastEntryANumber || isLastEntryAPercentNumber) {
+            return lastEntry.contains(SwiftCalculatorButton.DECIMAL.rawValue)
         } else {
             return false
         }
     }
 
-    func isLastEntryEndsWithDecimal() -> Bool {
-        return getLastEntry().hasSuffix(SwiftCalculatorButton.DECIMAL.rawValue)
+    var isLastEntryEndsWithDecimal: Bool {
+        return lastEntry.hasSuffix(SwiftCalculatorButton.DECIMAL.rawValue)
     }
     
 }

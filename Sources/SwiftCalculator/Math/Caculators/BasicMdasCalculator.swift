@@ -176,7 +176,7 @@ extension BasicMdasCalculator {
         case entry == SwiftCalculatorButton.DECIMAL.rawValue:
             return Decimal.zero
         case entry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue):
-            let trimmedEntry = String(entry.dropLast())
+            let trimmedEntry = entry.trimLast()
             let decimalEntry = Decimal(string: trimmedEntry) ?? 0.0
             return (baseNumber * decimalEntry) / Decimal(100.0)
         default:
@@ -190,7 +190,7 @@ extension BasicMdasCalculator {
         case entry == SwiftCalculatorButton.DECIMAL.rawValue:
             return Decimal(1)
         case entry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue):
-            let trimmedEntry = String(entry.dropLast())
+            let trimmedEntry = entry.trimLast()
             let decimalTrimmedEntry = Decimal(string: trimmedEntry) ?? Decimal.zero
             return (decimalTrimmedEntry) / Decimal(100.0)
         default:

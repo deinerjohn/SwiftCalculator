@@ -41,29 +41,29 @@ internal class OutputManager {
 
 extension OutputManager {
     func update(_ button: SwiftCalculatorButton) {
-        let entries = entriesManager.getEntries()
+        let entries = entriesManager.getEntries
         
         do {
             
             var result: Decimal = .zero
 
             switch true {
-            case entriesManager.isEntriesEmpty():
+            case entriesManager.isEntriesEmpty:
                 result = .zero
                 
-            case entriesManager.isSingleEntry():
+            case entriesManager.isSingleEntry:
                 switch true {
-                case entriesManager.isLastEntryADecimal():
+                case entriesManager.isLastEntryADecimal:
                     result = .zero
                     
-                case entriesManager.isLastEntryAPercentNumber(),
-                    entriesManager.isLastEntryANumber(),
-                    entriesManager.isLastEntryEndsWithExponent():
+                case entriesManager.isLastEntryAPercentNumber,
+                    entriesManager.isLastEntryANumber,
+                    entriesManager.isLastEntryEndsWithExponent:
                     
-                    result = entriesManager.getLastDoubleEntry()
+                    result = entriesManager.getLastDoubleEntry
                     
                 default:
-                    throw MathError.illegalOperation("Invalid entry: \(entriesManager.getLastEntry())")
+                    throw MathError.illegalOperation("Invalid entry: \(entriesManager.lastEntry)")
                 }
                 
             default:
@@ -83,14 +83,17 @@ extension OutputManager {
                     return NSDecimalNumber(decimal: result).stringValue
                 }
             }()
+            
+            entriesManager.setFormattedResult(resultText.formattedWithCommas())
 
-            print("Calculator: Key: \(button.rawValue) | Entries: \(entries) | Raw result: \(result) " +
+            print("Calculator: Key: \(button.rawValue) | Entries: \(entries) | Formatted Entries: \(entries.replacingMathSymbols()) | Raw result: \(result) " +
                   "| Formatted Result String: \(resultText.formattedWithCommas())")
 
             updateDelegate(
                 SwiftCalculatorUpdate.updating(
                     key: button.rawValue,
                     entries: entries,
+                    formattedEntries: entries.replacingMathSymbols(),
                     result: result,
                     formattedResult: resultText.formattedWithCommas()
                 )
@@ -113,7 +116,7 @@ extension OutputManager {
     }
 
     func initialize(_ number: Double) {
-        let entries = entriesManager.getEntries()
+        let entries = entriesManager.getEntries
         updateDelegate(SwiftCalculatorUpdate.initializing(number: number, entries: entries))
         print("Calculator: Initializing calculator \(number) | Entries: \(entries)")
     }
@@ -122,7 +125,12 @@ extension OutputManager {
         delegate?.onUpdateCalculator(update: calculatorUpdate)
     }
 
-    func getCurrentNumber() -> Decimal {
-        return entriesManager.getResult()
+    func getCurrentResult() -> Decimal {
+        return entriesManager.getResult
     }
+    
+    func getCurrentFormattedResult() -> String {
+        return entriesManager.getFormattedResult
+    }
+    
 }

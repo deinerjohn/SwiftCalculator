@@ -23,40 +23,40 @@ internal class OperatorProcessor {
         let `operator` = calculatorButton.rawValue
         
         switch true {
-        case entriesManager.isEntriesEmpty():
+        case entriesManager.isEntriesEmpty:
             
             entriesManager.setReadyToClear(false)
             entriesManager.addEntry(SwiftCalculatorButton.DIGIT(0).rawValue)
             entriesManager.addEntry(`operator`)
             
-        case entriesManager.isReadyToClear():
+        case entriesManager.isReadyToClear:
             
             entriesManager.setReadyToClear(false)
             entriesManager.clearEntries()
-            entriesManager.addEntry(String(describing: entriesManager.getResult()))
+            entriesManager.addEntry(String(describing: entriesManager.getResult))
             entriesManager.addEntry(`operator`)
             
-        case entriesManager.isLastEntryAnOperator():
+        case entriesManager.isLastEntryAnOperator:
             
             entriesManager.removeLastEntry()
             entriesManager.addEntry(`operator`)
             
-        case entriesManager.isLastEntryAPercentNumber():
+        case entriesManager.isLastEntryAPercentNumber:
             
             entriesManager.addEntry(`operator`)
             
-        case entriesManager.isLastEntryANumber():
+        case entriesManager.isLastEntryANumber:
             
-            if (entriesManager.isLastEntryEndsWithDecimal()) {
-                entriesManager.setLastEntry(String(entriesManager.getLastEntry().dropLast()))
+            if (entriesManager.isLastEntryEndsWithDecimal) {
+                entriesManager.setLastEntry(entriesManager.lastEntry.trimLast())
                 entriesManager.addEntry(`operator`)
             } else {
                 entriesManager.addEntry(`operator`)
             }
             
-        case entriesManager.isLastEntryADecimal():
+        case entriesManager.isLastEntryADecimal:
             
-            if (entriesManager.isSingleEntry()) {
+            if (entriesManager.isSingleEntry) {
                 entriesManager.removeLastEntry()
                 entriesManager.addEntry(SwiftCalculatorButton.DIGIT(0).rawValue)
                 entriesManager.addEntry(`operator`)

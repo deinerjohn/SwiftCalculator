@@ -24,4 +24,11 @@ extension String {
 
         return formatter.string(from: NSNumber(value: number)) ?? self
     }
+    
+    func trimLast() -> String {
+        var string = self
+        string = String(string.dropLast())
+        return string
+    }
+    
 }

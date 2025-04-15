@@ -165,7 +165,7 @@ extension BasicNonMdasCalculator {
     private func getEntryWithPercentFactor(entry: String, baseNumber: Decimal) -> Decimal {
 
         if entry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue) {
-            let trimmedEntry = String(entry.dropLast())
+            let trimmedEntry = entry.trimLast()
             let decimalEntry = Decimal(string: trimmedEntry) ?? 0.0
             return (baseNumber * decimalEntry) / Decimal(100.0)
         } else {
@@ -177,7 +177,7 @@ extension BasicNonMdasCalculator {
     private func getEntryWithPercentFactor(_ entry: String) -> Decimal {
         
         if entry.hasSuffix(SwiftCalculatorButton.PERCENT.rawValue) {
-            let trimmedEntry = String(entry.dropLast())
+            let trimmedEntry = entry.trimLast()
             let decimalTrimmedEntry = Decimal(string: trimmedEntry) ?? Decimal.zero
             return (decimalTrimmedEntry) / Decimal(100.0)
         } else {

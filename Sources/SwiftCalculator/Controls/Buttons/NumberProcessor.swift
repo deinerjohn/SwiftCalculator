@@ -18,35 +18,35 @@ internal class NumberProcessor {
         let number = calculatorButton.rawValue
         
         switch true {
-        case entriesManager.isEntriesEmpty():
+        case entriesManager.isEntriesEmpty:
             
             entriesManager.setReadyToClear(false)
             entriesManager.addEntry(number)
             
-        case entriesManager.isReadyToClear():
+        case entriesManager.isReadyToClear:
             
             entriesManager.setReadyToClear(false)
             entriesManager.clearEntries()
             entriesManager.addEntry(number)
             
-        case entriesManager.isLastEntryAnOperator():
+        case entriesManager.isLastEntryAnOperator:
             entriesManager.addEntry(number)
             
-        case entriesManager.isLastEntryAPercentNumber():
+        case entriesManager.isLastEntryAPercentNumber:
             
-            let entry = String(entriesManager.getLastEntry().dropLast())
+            let entry = entriesManager.lastEntry.trimLast()
             entriesManager.setLastEntry(entry)
             entriesManager.appendToLastEntry(number)
             
-        case entriesManager.isLastEntryANumber():
+        case entriesManager.isLastEntryANumber:
             
-            if (entriesManager.getLastEntry() == "0") {
+            if (entriesManager.lastEntry == "0") {
                 entriesManager.setLastEntry(number)
             } else {
                 entriesManager.appendToLastEntry(number)
             }
             
-        case entriesManager.isLastEntryADecimal():
+        case entriesManager.isLastEntryADecimal:
             entriesManager.appendToLastEntry(number)
             
         default:

@@ -7,7 +7,11 @@
 
 import Foundation
 
-open class SwiftCalculatorUtility {
+/// A utility class that implements the core logic for a Swift-based calculator.
+///
+/// This class handles user input, calculator state, and communicates updates through the control processor.
+/// It conforms to the `SwiftCalculator` protocol and is typically not used directly, but via the `SwiftCalculator.instance()` factory method.
+open class SwiftCalculatorUtility: SwiftCalculator {
     
     private let controlProcessor: ControlProcessor
     
@@ -24,7 +28,7 @@ open class SwiftCalculatorUtility {
     
 }
 
-extension SwiftCalculatorUtility: SwiftCalculator {
+extension SwiftCalculatorUtility {
     
     public func press(_ button: SwiftCalculatorButton) {
         switch button {
@@ -110,9 +114,11 @@ extension SwiftCalculatorUtility: SwiftCalculator {
         controlProcessor.setDelegate(delegate)
     }
     
-    public func getCurrentNumber() -> Decimal {
-        return controlProcessor.outputManager.getCurrentNumber()
+    public func getCurrentResult() -> Decimal {
+        return controlProcessor.outputManager.getCurrentResult()
     }
     
-    
+    public func getCurrentFormattedResult() -> String {
+        return controlProcessor.outputManager.getCurrentFormattedResult()
+    }
 }
