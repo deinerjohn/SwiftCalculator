@@ -181,7 +181,7 @@ class CalculatorViewModel: ObservableObject, SwiftCalculatorDelegate {
 
 
 struct CalculatorView: View {
-    @StateObject private var viewModel = ContentViewModel()
+    @StateObject private var viewModel = CalculatorViewModel()
 
     let buttons: [[String]] = [
         ["⌫", "Clear", "%", "÷"],
@@ -274,9 +274,6 @@ struct CalculatorView: View {
 In the `CalculatorViewModel`:
 
 The `@Published var result` property is updated whenever the calculator state changes.
-
-Methods like `pressDigit()`, `pressAdd()`, and `pressEqual()` are responsible for interacting with the SwiftCalculator.
-
 
 ## SwiftCalculatorDelegate
 This method, `onUpdateCalculator(update:)`, is called by the `SwiftCalculator` to send updates whenever a significant change occurs. This could include changes to the current result, a button press, or any internal state changes.
