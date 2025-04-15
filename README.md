@@ -64,19 +64,27 @@ class ViewController: UIViewController, SwiftCalculatorDelegate {
         super.viewDidLoad()
         
         // Set up the calculator
-        let delegate = self
-        calculator = SwiftCalculator.instance(
-            calculatorType: .BASIC_MDAS, // or any other type
+        calculator = SwiftCalculatorUtility.instance(
+            calculatorType: .BASIC_MDAS,
             initialNumber: 0.0,
             readyToClear: true,
-            delegate: delegate
+            delegate: self
         )
     }
 
     // Handle calculator updates
     func onUpdateCalculator(update: SwiftCalculatorUpdate) {
-        // You can update UI elements here
-        print("Calculator updated: \(update)")
+        switch update {
+        case .initializing(let number, let entries):
+            //TODO:
+            break
+        case .updating(let key, let entries, let result2, let resultString):
+            //TODO:
+            break
+        case .error(let swiftCalculatorError):
+            //TODO:
+            break
+        }
     }
 }
 
@@ -94,23 +102,31 @@ class CalculatorViewModel: ObservableObject, SwiftCalculatorDelegate {
     private var calculator: SwiftCalculator!
 
     init() {
-        let delegate = self
-        calculator = SwiftCalculator.instance(
+        calculator = SwiftCalculatorUtility.instance(
             calculatorType: .BASIC_MDAS,
             initialNumber: 0.0,
             readyToClear: true,
-            delegate: delegate
+            delegate: self
         )
     }
 
     // Handle calculator updates
     func onUpdateCalculator(update: SwiftCalculatorUpdate) {
-        result = "\(calculator.getCurrentNumber())"
+        switch update {
+        case .initializing(let number, let entries):
+            //TODO:
+            break
+        case .updating(let key, let entries, let result2, let resultString):
+            result = "\(entries)"
+            break
+        case .error(let swiftCalculatorError):
+            break
+        }
     }
 
     // Methods for interacting with the calculator
     func pressDigit(_ digit: Int) {
-        calculator.press(.digit(digit))
+        calculator.press(.DIGIT(digit))
     }
 
     func pressAdd() {
